@@ -1,0 +1,25 @@
+
+rules:
+  - id: python-sql-injection
+    pattern-either:
+      - pattern: $CURSOR.execute(f"...")
+      - pattern: $CURSOR.execute("..." % ...)
+      - pattern: $CURSOR.execute("...".format(...))
+    message: "SQL Injection detected. Use parameterized queries."
+    languages:
+      - python
+    severity: ERROR
+
+  - id: python-insecure-subprocess
+    pattern: subprocess.call(..., shell=True)
+    message: "Insecure subprocess usage. Avoid shell=True."
+    languages:
+      - python
+    severity: WARNING
+
+  - id: python-os-system
+    pattern: os.system($CMD)
+    message: "Potential command injection. Avoid os.system with untrusted input."
+    languages:
+      - python
+    severity: WARNING
